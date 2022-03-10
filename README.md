@@ -1,11 +1,87 @@
-# Vue 3 + Typescript + Vite
+# Vue 3 + Typescript + Vite + Quasar + Vitest
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A simple example about how to use Vitest and Quasar
 
-## Recommended IDE Setup
+## Requirements
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+- [Node >= v16](https://nodejs.org/en/download/)
+- [Yarn](https://yarnpkg.com/getting-started/install)
 
-## Type Support For `.vue` Imports in TS
+## Good to know
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's `.vue` type support plugin by running `Volar: Switch TS Plugin on/off` from VSCode command palette.
+This project is buid on top of
+
+- [Vue.js v3](https://vuejs.org/)
+- [Quasar v3](https://quasar.dev/)
+- [Vite](https://vitejs.dev/)
+- [Vitest](https://vitest.dev/)
+- [Vue Test Utils](https://test-utils.vuejs.org/guide/)
+
+## Setup
+
+```
+yarn install
+yarn build
+
+yarn dev
+yarn test
+yarn test --run
+```
+
+## How it works
+
+In [`test/setup.ts`](test/setup.ts) is where Quasar is registered [in test utils](https://test-utils.vuejs.org/api/#global).
+
+```ts
+import { config } from "@vue/test-utils";
+import { Quasar } from "quasar";
+
+config.global.plugins.push([Quasar, {}]);
+```
+
+> TODO: move production quasar and test quasar to the same file
+
+In [test/_utils/quasar.ts](test/_utils/quasar.ts) there is a function to wrarp quasar components.
+
+```ts
+import { defineComponent, h, normalizeProps } from "vue";
+import { mount } from "@vue/test-utils";
+import { QLayout } from "quasar";
+
+const buildWithLayout = (original) => {
+  return defineComponent({
+    inheritAttrs: false,
+    setup(_props, ctx) {
+      return () =>
+        h(QLayout, null, () => [h(original, normalizeProps(ctx.attrs))]);
+    },
+  });
+};
+
+const mountQuasar: typeof mount = (original, ...options) => {
+  return mount(buildWithLayout(original), ...options);
+};
+
+export {
+  mountQuasar
+}
+```
+
+> TODO: turn it more future proof
+
+There is a [alias](tsconfig.json) to root of the project, called `:`.
+So we can just import the file from any component or script.
+
+```ts
+import { mountQuasar } from ":/test/_utils";
+
+import { test, expect } from 'vitest'
+
+// -- omit ---
+
+const wrapper = mountQuasar(COMPONENT);
+
+const inner = wrapper.findComponent(BtnCounter);
+```
+
+See [`BtnCounter.test.ts`](src/components/BtnCounter.test.ts) for a full example.
