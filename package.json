@@ -1,0 +1,27 @@
+{
+  "name": "quasar-test-demo",
+  "private": true,
+  "version": "0.0.0",
+  "engines": {
+    "node": "^16"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.13.0",
+    "quasar": "^2.5.5",
+    "vue": "^3.2.25"
+  },
+  "devDependencies": {
+    "@quasar/vite-plugin": "^1.0.6",
+    "@vitejs/plugin-vue": "^2.2.0",
+    "sass": "1.32.0",
+    "typescript": "^4.5.4",
+    "vite": "^2.8.0",
+    "vue-tsc": "^0.29.8"
+  },
+  "packageManager": "yarn@3.2.0"
+}
