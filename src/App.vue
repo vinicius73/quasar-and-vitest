@@ -83,17 +83,18 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <BtnCounter />
     </q-page-container>
   </q-layout>
 </template>
 
 <script lang="ts">
 import { ref, defineComponent } from 'vue'
+import BtnCounter from './components/BtnCounter.vue'
 
 export default defineComponent({
-  name: 'MyLayout',
-
+  name: 'App',
+  components: { BtnCounter },
   setup () {
     const leftDrawerOpen = ref(false)
 
