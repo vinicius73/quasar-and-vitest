@@ -1,6 +1,6 @@
-import BtnCounter from '../src/components/BtnCounter.vue';
 import { test, expect } from 'vitest'
 import { mountQuasar } from ":/test/_utils";
+import BtnCounter from './BtnCounter.vue';
 
 test("BtnCounter", async () => {
   expect(BtnCounter).toBeTruthy();
