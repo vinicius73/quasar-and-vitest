@@ -4,7 +4,10 @@ import { useQuasar } from 'quasar'
 
 export default defineComponent({
   name: 'BtnCounter',
-  setup ()  {
+  props: {
+    supper: Boolean,
+  },
+  setup (props, ctx)  {
     const counter = ref(0)
 
     const $q = useQuasar()
@@ -32,16 +35,16 @@ export default defineComponent({
 <template>
   <q-page padding>
     <div class="text-h4">
-      {{ version }}
-      <q-badge align="top">
+      {{ supper ? 'SUPPER' : '' }} {{ version }}
+      <q-badge data-test="counter" align="top">
         {{ counter }}
       </q-badge>
     </div>
 
     <q-separator />
     <q-btn-group push>
-      <q-btn @click="minus">-</q-btn>
-      <q-btn @click="plus">+</q-btn>
+      <q-btn data-test="minus" @click="minus">-</q-btn>
+      <q-btn data-test="plus" @click="plus">+</q-btn>
     </q-btn-group>
   </q-page>
 </template>
